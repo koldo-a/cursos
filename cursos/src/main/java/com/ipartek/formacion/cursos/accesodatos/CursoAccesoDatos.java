@@ -59,7 +59,7 @@ public class CursoAccesoDatos {
 			ResenyaDTO resenya;
 			
 			while (rs.next()) {
-				resenya = new ResenyaDTO(null, null, rs.getString("ahr.resenya")
+				resenya = new ResenyaDTO(null, null, rs.getString("ahr.resenya"), null
 						);
 				curso = new CursoDTO2(rs.getLong("c.codigo"), rs.getString("c.nombre"), rs.getString("c.identificador"), rs.getInt("c.nhoras"), resenya);
 				

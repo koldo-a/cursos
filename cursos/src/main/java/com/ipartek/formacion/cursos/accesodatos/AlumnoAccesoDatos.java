@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import com.ipartek.formacion.cursos.dtos.AlumnoDTO;
 
 public class AlumnoAccesoDatos {
-	private static final String SQL_SELECT = "SELECT codigo, nombre, apellidos FROM alumno";
+	private static final String SQL_SELECT = "SELECT codigo, nombre, apellidos, telefono, email, dni FROM alumno";
 	private static final String SQL_SELECT_ID = SQL_SELECT + " WHERE codigo = ?";
-	private static final String SQL_INSERT = "INSERT INTO alumno (nombre, apellidos) VALUES (?, ? ,?)";
-	private static final String SQL_UPDATE = "UPDATE alumno SET nombre=?, apellidos=? WHERE codigo=?";
+	private static final String SQL_INSERT = "INSERT INTO alumno (nombre, apellidos, telefono, email, dni) VALUES (?, ?, ?, ?, ?)";
+	private static final String SQL_UPDATE = "UPDATE alumno SET nombre=?, apellidos=?, telefono=?, email=?, dni=? WHERE codigo=?";
 	private static final String SQL_DELETE = "DELETE FROM alumno WHERE codigo=?";
 
 	public static ArrayList<AlumnoDTO> obtenerTodos() {
@@ -24,8 +24,8 @@ public class AlumnoAccesoDatos {
 			AlumnoDTO alumno;
 
 			while (rs.next()) {
-				alumno = new AlumnoDTO(rs.getLong("codigo"), rs.getString("nombre"), rs.getString("apellidos")
-						);
+				alumno = new AlumnoDTO(rs.getLong("codigo"), rs.getString("nombre"), rs.getString("apellidos"),
+						rs.getString("telefono"), rs.getString("email"), rs.getString("dni"));
 
 				alumnos.add(alumno);
 			}
@@ -44,7 +44,8 @@ public class AlumnoAccesoDatos {
 			ResultSet rs = pst.executeQuery();
 
 			if (rs.next()) {
-				return new AlumnoDTO(rs.getLong("codigo"), rs.getString("nombre"), rs.getString("apellidos"));
+				return new AlumnoDTO(rs.getLong("codigo"), rs.getString("nombre"), rs.getString("apellidos"),
+						rs.getString("telefono"), rs.getString("email"), rs.getString("dni"));
 			} else {
 				return null;
 			}
@@ -58,6 +59,9 @@ public class AlumnoAccesoDatos {
 				PreparedStatement pst = con.prepareStatement(SQL_INSERT);) {
 			pst.setString(1, alumno.nombre());
 			pst.setString(2, alumno.apellidos());
+			pst.setString(3, alumno.telefono());
+			pst.setString(4, alumno.email());
+			pst.setString(5, alumno.dni());
 
 			pst.executeUpdate();
 
@@ -72,7 +76,10 @@ public class AlumnoAccesoDatos {
 				PreparedStatement pst = con.prepareStatement(SQL_UPDATE);) {
 			pst.setString(1, alumno.nombre());
 			pst.setString(2, alumno.apellidos());
-			pst.setLong(4, codigo);
+			pst.setString(3, alumno.telefono());
+			pst.setString(4, alumno.email());
+			pst.setString(5, alumno.dni());
+			pst.setLong(6, codigo);
 
 			pst.executeUpdate();
 

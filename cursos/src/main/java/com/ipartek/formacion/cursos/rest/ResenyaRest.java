@@ -25,14 +25,14 @@ public class ResenyaRest {
 	}
 	
 	@PUT
-	@Path("/{codigo}")
-	public ResenyaDTO modificar(@PathParam("codigo") Long codigo, ResenyaDTO resenya) {
-		return ResenyaAccesoDatos.modificar(codigo, resenya);
+	@Path("/{resenyas_id}")
+	public ResenyaDTO modificar(@PathParam("resenyas_id") Long resenyas_id, ResenyaDTO resenya) {
+		return ResenyaAccesoDatos.modificar(resenyas_id, resenya);
 	}
 	
 	@DELETE
-	@Path("/{codigo}")
-	public void borrar(@PathParam("codigo") Long codigo) {
-		ResenyaAccesoDatos.borrar(codigo);
+	@Path("/{resenyas_id}")
+	public void borrar(@PathParam("resenyas_id") Long resenyas_id) {
+		ResenyaAccesoDatos.borrar(resenyas_id);
 	}
 }

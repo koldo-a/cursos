@@ -23,7 +23,7 @@ public class ResenyaAccesoDatos {
 			ResenyaDTO profe;
 
 			while (rs.next()) {
-				profe = new ResenyaDTO(rs.getLong("alumno_codigo"), rs.getLong("curso_codigo"), rs.getString("resenya")
+				profe = new ResenyaDTO(rs.getLong("alumno_codigo"), rs.getLong("curso_codigo"), rs.getString("resenya"), rs.getLong("resenyas_id")
 						);
 
 				profesores.add(profe);
@@ -49,13 +49,13 @@ public class ResenyaAccesoDatos {
 		}
 	}
 
-	public static ResenyaDTO modificar(Long codigo, ResenyaDTO resenya) {
+	public static ResenyaDTO modificar(Long resenyas_id, ResenyaDTO resenya) {
 		try (Connection con = AccesoDatos.obtenerConexion();
 				PreparedStatement pst = con.prepareStatement(SQL_UPDATE);) {
 			pst.setLong(1, resenya.alumno_codigo());
 			pst.setLong(2, resenya.curso_codigo());
 			pst.setString(3, resenya.resenya());
-
+			pst.setLong(4, resenya.resenyas_id());
 			pst.executeUpdate();
 
 			return resenya;
