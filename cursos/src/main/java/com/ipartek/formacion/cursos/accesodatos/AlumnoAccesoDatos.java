@@ -62,7 +62,6 @@ public class AlumnoAccesoDatos {
 			pst.setString(3, alumno.telefono());
 			pst.setString(4, alumno.email());
 			pst.setString(5, alumno.dni());
-
 			pst.executeUpdate();
 
 			return alumno;

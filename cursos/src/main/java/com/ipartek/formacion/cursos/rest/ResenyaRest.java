@@ -19,6 +19,12 @@ public class ResenyaRest {
 		return ResenyaAccesoDatos.obtenerTodos();
 	}
 	
+	@GET
+	@Path("/{resenyas_id}")
+	public ResenyaDTO obtenerPorId(@PathParam("resenyas_id") Long resenyas_id) {
+		return ResenyaAccesoDatos.obtenerPorId(resenyas_id);
+	}
+	
 	@POST
 	public ResenyaDTO insertar(ResenyaDTO resenya) {
 		return ResenyaAccesoDatos.insertar(resenya);

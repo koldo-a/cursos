@@ -10,10 +10,11 @@ import com.ipartek.formacion.cursos.dtos.ResenyaDTO;
 
 public class ResenyaAccesoDatos {
 	private static final String SQL_SELECT = "SELECT * FROM alumno_has_resenyas";
+	private static final String SQL_SELECT_ID = SQL_SELECT + " WHERE resenyas_id = ?";
 	private static final String SQL_INSERT = "INSERT INTO alumno_has_resenyas (alumno_codigo, curso_codigo, resenya) VALUES (?, ? ,?)";
-	private static final String SQL_UPDATE = "UPDATE alumno_has_resenyas SET resenya=? WHERE alumno_codigo=? AND curso_codigo=?";
-	private static final String SQL_DELETE = "DELETE FROM alumno_has_resenyas ahr WHERE ahr.codigo=?";
-	
+	private static final String SQL_UPDATE = "UPDATE alumno_has_resenyas SET alumno_codigo=?, curso_codigo=?, resenya=? WHERE resenyas_id=?";
+	private static final String SQL_DELETE = "DELETE FROM alumno_has_resenyas ahr WHERE ahr.resenyas_id=?";
+
 	public static ArrayList<ResenyaDTO> obtenerTodos() {
 		var profesores = new ArrayList<ResenyaDTO>();
 
@@ -23,8 +24,8 @@ public class ResenyaAccesoDatos {
 			ResenyaDTO profe;
 
 			while (rs.next()) {
-				profe = new ResenyaDTO(rs.getLong("alumno_codigo"), rs.getLong("curso_codigo"), rs.getString("resenya"), rs.getLong("resenyas_id")
-						);
+				profe = new ResenyaDTO(rs.getLong("alumno_codigo"), rs.getLong("curso_codigo"), rs.getString("resenya"),
+						rs.getLong("resenyas_id"));
 
 				profesores.add(profe);
 			}
@@ -34,7 +35,24 @@ public class ResenyaAccesoDatos {
 			throw new RuntimeException("Error en la select", e);
 		}
 	}
-	
+
+	public static ResenyaDTO obtenerPorId(Long resenyas_id) {
+		try (Connection con = AccesoDatos.obtenerConexion();
+				PreparedStatement pst = con.prepareStatement(SQL_SELECT_ID);) {
+			pst.setLong(1, resenyas_id);
+
+			ResultSet rs = pst.executeQuery();
+
+			if (rs.next()) {
+				return new ResenyaDTO(rs.getLong("alumno_codigo"), rs.getLong("curso_codigo"), rs.getString("resenya"), rs.getLong("resenyas_id"));
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException("Error en la select", e);
+		}
+	}
+
 	public static ResenyaDTO insertar(ResenyaDTO resenya) {
 		try (Connection con = AccesoDatos.obtenerConexion();
 				PreparedStatement pst = con.prepareStatement(SQL_INSERT);) {
