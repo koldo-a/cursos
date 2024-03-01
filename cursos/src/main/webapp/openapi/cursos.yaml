@@ -1,0 +1,100 @@
+openapi: '3.0.2'
+info:
+  title: Cursos
+  version: '1.0'
+servers:
+  - url: http://localhost:8080/cursos/api/v1
+
+tags:
+  - name: resenyas
+  - name: cursos
+paths:
+  /resenyas:
+    get:
+      tags:
+        - resenyas
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+                schema:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Resenya'
+
+  /cursos:
+    get:
+      tags:
+       - cursos
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+                schema:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Curso'
+  /cursos/resenyas:
+    get:
+      tags:
+       - cursos
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+                schema:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Curso'
+
+  /cursos/{codigo}:
+    get:
+      tags:
+      - cursos
+      parameters:
+      - name: codigo
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+                schema:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Curso'
+
+
+components:
+  schemas:
+    Resenya:
+      type: object
+      properties:
+        alumno_codigo:
+          type: integer
+          format: int64
+        curso_codigo:
+          type: integer
+          format: int64
+        resenya:
+          type: string
+    Curso:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        identificador:
+          type: string
+      
+        resenya:
+          $ref: '#/components/schemas/Resenya'
