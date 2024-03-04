@@ -6,13 +6,13 @@ servers:
   - url: http://localhost:8080/cursos/api/v1
 
 tags:
-  - name: resenyas
-  - name: cursos
+  - name: Reseñas
+  - name: Cursos
 paths:
   /resenyas:
     get:
       tags:
-        - resenyas
+        - Reseñas
       responses:
         '200':
           description: OK
@@ -22,11 +22,78 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Resenya'
-
+    post:
+      tags:
+        - Reseñas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resenya'
+        required: true
+      responses:
+        '201':
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resenya'
+    delete:
+      tags:
+        - Reseñas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: NO CONTENT
+  /resenyas/{codigo}:
+    get:
+      tags:
+      - Reseñas
+      parameters:
+      - name: codigo
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+                schema:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Resenya'
+    put:
+      tags:
+        - Reseñas
+      parameters:
+        - name: codigo
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resenya'
+        required: true
+      responses:
+        '200':
+          description: OK
   /cursos:
     get:
       tags:
-       - cursos
+       - Cursos
       responses:
         '200':
           description: OK
@@ -39,7 +106,7 @@ paths:
   /cursos/resenyas:
     get:
       tags:
-       - cursos
+       - Cursos
       responses:
         '200':
           description: OK
@@ -53,7 +120,7 @@ paths:
   /cursos/{codigo}:
     get:
       tags:
-      - cursos
+      - Cursos
       parameters:
       - name: codigo
         in: path
@@ -85,6 +152,9 @@ components:
           format: int64
         resenya:
           type: string
+        resenyas_id:
+          type: integer
+          format: int64
     Curso:
       type: object
       properties:

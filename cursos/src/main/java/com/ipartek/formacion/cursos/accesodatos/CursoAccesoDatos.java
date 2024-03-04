@@ -15,14 +15,10 @@ import com.ipartek.formacion.cursos.dtos.ResenyaDTO;
 
 public class CursoAccesoDatos {
 	private static final Logger LOG = Logger.getLogger(CursoAccesoDatos.class.getName());
-	
-	private static final String SQL_SELECT_CURSOS = "SELECT DISTINCT * FROM curso c";
 	private static final String SQL_SELECT = "SELECT * FROM curso c join profesor p ON c.profesor_codigo = p.codigo";
 	private static final String SQL_SELECT_R = "SELECT * FROM curso c join profesor p ON c.profesor_codigo = p.codigo join alumno_has_resenyas ahr ON c.codigo = ahr.curso_codigo";
-	private static final String SQL_SELECT_RESENYA = "SELECT * FROM curso c join alumno_has_resenyas ahr ON c.codigo = ahr.curso_codigo";
 	private static final String SQL_SELECT_ID = SQL_SELECT + " WHERE c.codigo = ?";
 	private static final String SQL_SELECT_ID_R = SQL_SELECT_R + " WHERE c.codigo = ?";
-	private static final String SQL_SELECT_CODIGO = SQL_SELECT + " WHERE c.codigo=?";
 
 	public static ArrayList<CursoDTO> obtenerTodos() {
 		var cursos = new ArrayList<CursoDTO>();
@@ -46,7 +42,7 @@ public class CursoAccesoDatos {
 
 			return cursos;
 		} catch (SQLException e) {
-			LOG.log(Level.SEVERE, "NO SE HAN PODIDO OBTENER LOS LIBROS CON SUS AUTORES", e);
+			LOG.log(Level.SEVERE, "NO SE HAN PODIDO OBTENER LOS CURSOS CON SUS PROFESORES", e);
 			throw new RuntimeException("Error en la select", e);
 		}
 	}
@@ -54,7 +50,7 @@ public class CursoAccesoDatos {
 		var cursos = new ArrayList<CursoDTO2>();
 		
 		try (Connection con = AccesoDatos.obtenerConexion();
-				PreparedStatement pst = con.prepareStatement(SQL_SELECT_RESENYA);
+				PreparedStatement pst = con.prepareStatement(SQL_SELECT_R);
 				ResultSet rs = pst.executeQuery()) {
 			
 			CursoDTO2 curso;
@@ -115,7 +111,7 @@ public class CursoAccesoDatos {
 	    ArrayList<CursoDTO> cursos = new ArrayList<CursoDTO>();
 
 	    try (Connection con = AccesoDatos.obtenerConexion();
-	         PreparedStatement pst = con.prepareStatement(SQL_SELECT_CURSOS);
+	         PreparedStatement pst = con.prepareStatement(SQL_SELECT);
 	         ResultSet rs = pst.executeQuery()) {
 
 	        while (rs.next()) {
@@ -134,7 +130,7 @@ public class CursoAccesoDatos {
 		var cursos = new ArrayList<CursoDTO>();
 
 		try (Connection con = AccesoDatos.obtenerConexion();
-				PreparedStatement pst = con.prepareStatement(SQL_SELECT_CODIGO);
+				PreparedStatement pst = con.prepareStatement(SQL_SELECT_ID);
 				) {
 			pst.setLong(1, codigo);
 			
