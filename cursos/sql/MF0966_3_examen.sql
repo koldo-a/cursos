@@ -39,7 +39,7 @@ CREATE TABLE `alumno` (
   `activo` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`codigo`),
   UNIQUE KEY `dni_UNIQUE` (`dni`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,8 +48,39 @@ CREATE TABLE `alumno` (
 
 LOCK TABLES `alumno` WRITE;
 /*!40000 ALTER TABLE `alumno` DISABLE KEYS */;
-INSERT INTO `alumno` VALUES (0,'alumno','sin asignar',NULL,NULL,NULL,00000,0,'aaaaaaa@aaaaa.com','0000000x',0,0),(1,'sergio','aparicio vargas','1977-12-01','','',00000,944110293,'aaaa@aaaa.com','44974398z',0,1),(2,'maite','monasterio','1986-11-11','','',48007,944110293,'mmonasterio@gmail.com','16071559x',0,1),(4,'enrique javier','ruiz jimenez','2017-02-14','','',00048,944110239,'enrique@gmail.com','45677362y',0,1);
+INSERT INTO `alumno` VALUES (0,'alumno','sin asignar',NULL,NULL,NULL,00000,0,'aaaaaaa@aaaaa.com','0000000x',0,0),(1,'sergio','aparicio vargas','1977-12-01','','',00000,944110293,'aaaa@aaaa.com','44974398z',0,1),(2,'maite','monasterio','1986-11-11','','',48007,944110293,'mmonasterio@gmail.com','16071559x',0,1),(4,'enrique javier','ruiz jimenez','2017-02-14','','',00048,944110239,'enrique@gmail.com','45677362y',0,1),(11,'Koldo','Arretxea García',NULL,NULL,NULL,NULL,0,'koldo@gmail.com','0000700x',0,1);
 /*!40000 ALTER TABLE `alumno` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `alumno_has_resenyas`
+--
+
+DROP TABLE IF EXISTS `alumno_has_resenyas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `alumno_has_resenyas` (
+  `alumno_codigo` int NOT NULL,
+  `curso_codigo` int NOT NULL,
+  `resenya` varchar(100) NOT NULL,
+  `resenyas_id` int NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`alumno_codigo`,`curso_codigo`),
+  UNIQUE KEY `resenyas_id_UNIQUE` (`resenyas_id`),
+  KEY `fk_alumno_has_curso_curso1_idx` (`curso_codigo`),
+  KEY `fk_alumno_has_curso_alumno1_idx` (`alumno_codigo`),
+  CONSTRAINT `fk_alumno_has_curso_alumno1` FOREIGN KEY (`alumno_codigo`) REFERENCES `alumno` (`codigo`),
+  CONSTRAINT `fk_alumno_has_curso_curso1` FOREIGN KEY (`curso_codigo`) REFERENCES `curso` (`codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `alumno_has_resenyas`
+--
+
+LOCK TABLES `alumno_has_resenyas` WRITE;
+/*!40000 ALTER TABLE `alumno_has_resenyas` DISABLE KEYS */;
+INSERT INTO `alumno_has_resenyas` VALUES (1,1,'muy mal',1),(1,2,'muy requetebien',5),(1,3,'muy bien',4),(1,4,'na',10),(1,5,'bestialísimo',13),(2,4,'bestialísimo',11);
+/*!40000 ALTER TABLE `alumno_has_resenyas` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -107,7 +138,7 @@ CREATE TABLE `curso` (
   KEY `fk_curso_profesor_codigo_idx` (`profesor_codigo`),
   CONSTRAINT `fk_curso_cliente_codigo` FOREIGN KEY (`cliente_codigo`) REFERENCES `cliente` (`codigo`),
   CONSTRAINT `fk_curso_profesor_codigo` FOREIGN KEY (`profesor_codigo`) REFERENCES `profesor` (`codigo`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -116,7 +147,7 @@ CREATE TABLE `curso` (
 
 LOCK TABLES `curso` WRITE;
 /*!40000 ALTER TABLE `curso` DISABLE KEYS */;
-INSERT INTO `curso` VALUES (1,'Desarrrollo de Aplicaciones con Tecnologias Web','18482675','2017-01-09','2017-06-13',510,NULL,1,2,300000.00,1),(2,'Desarrollo de Bases de Datos y Programacion orientada a Objetos','18488225','2017-02-20','2017-09-29',630,'IFCD0112_FIC.pdf',1,2,400000.00,1),(3,'Publicidad en internet','18482678','2017-03-27','2017-03-30',10,NULL,1,3,1500.00,1),(4,'Programación en Bases de Datos relaciones con Oracle 12c','CI67','2017-05-02','2017-05-30',30,'CI67.pdf',1,3,3500.00,1);
+INSERT INTO `curso` VALUES (1,'Desarrrollo de Aplicaciones con Tecnologias Web','18482675','2017-01-09','2017-06-13',510,NULL,1,2,300000.00,1),(2,'Desarrollo de Bases de Datos y Programacion orientada a Objetos','18488225','2017-02-20','2017-09-29',630,'IFCD0112_FIC.pdf',1,2,400000.00,1),(3,'Publicidad en internet','18482678','2017-03-27','2017-03-30',10,NULL,1,3,1500.00,1),(4,'Programación en Bases de Datos relaciones con Oracle 12c','CI67','2017-05-02','2017-05-30',30,'CI67.pdf',1,3,3500.00,1),(5,'Desarrollo JAVA','2573756','2018-07-02','2018-09-02',40,'fsefsf.pdf',1,3,45642.00,1);
 /*!40000 ALTER TABLE `curso` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -872,4 +903,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-29  8:50:49
+-- Dump completed on 2024-03-04  8:52:29

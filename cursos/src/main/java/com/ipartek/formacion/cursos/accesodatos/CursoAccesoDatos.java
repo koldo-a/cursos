@@ -18,8 +18,10 @@ public class CursoAccesoDatos {
 	
 	private static final String SQL_SELECT_CURSOS = "SELECT DISTINCT * FROM curso c";
 	private static final String SQL_SELECT = "SELECT * FROM curso c join profesor p ON c.profesor_codigo = p.codigo";
+	private static final String SQL_SELECT_R = "SELECT * FROM curso c join profesor p ON c.profesor_codigo = p.codigo join alumno_has_resenyas ahr ON c.codigo = ahr.curso_codigo";
 	private static final String SQL_SELECT_RESENYA = "SELECT * FROM curso c join alumno_has_resenyas ahr ON c.codigo = ahr.curso_codigo";
 	private static final String SQL_SELECT_ID = SQL_SELECT + " WHERE c.codigo = ?";
+	private static final String SQL_SELECT_ID_R = SQL_SELECT_R + " WHERE c.codigo = ?";
 	private static final String SQL_SELECT_CODIGO = SQL_SELECT + " WHERE c.codigo=?";
 
 	public static ArrayList<CursoDTO> obtenerTodos() {
@@ -92,12 +94,13 @@ public class CursoAccesoDatos {
 	}
 	public static CursoDTO2 obtenerPorIdResenya(Long id) {
 		try (Connection con = AccesoDatos.obtenerConexion();
-				PreparedStatement pst = con.prepareStatement(SQL_SELECT_ID);) {
+				PreparedStatement pst = con.prepareStatement(SQL_SELECT_ID_R);) {
 			pst.setLong(1, id);
 			
 			ResultSet rs = pst.executeQuery();
-			ResenyaDTO resenya = null;
 			if (rs.next()) {
+				
+				ResenyaDTO resenya = new ResenyaDTO(null, null, rs.getString("ahr.resenya"), null);
 				
 				return new CursoDTO2(rs.getLong("c.codigo"), rs.getString("c.nombre"), rs.getString("c.identificador"), rs.getInt("c.nhoras"), resenya);
 			} else {
