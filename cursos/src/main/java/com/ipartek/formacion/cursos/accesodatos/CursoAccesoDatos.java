@@ -12,29 +12,32 @@ import java.util.logging.Logger;
 import com.ipartek.formacion.cursos.dtos.CursoDTO;
 import com.ipartek.formacion.cursos.dtos.CursoDTO2;
 import com.ipartek.formacion.cursos.dtos.CursoDTO3;
+import com.ipartek.formacion.cursos.dtos.CursoDTO4;
 import com.ipartek.formacion.cursos.dtos.ProfeDTO;
+import com.ipartek.formacion.cursos.dtos.ProfeDTO2;
 import com.ipartek.formacion.cursos.dtos.ResenyaDTO;
 
 public class CursoAccesoDatos {
 	private static final Logger LOG = Logger.getLogger(CursoAccesoDatos.class.getName());
-	private static final String SQL_SELECT = "SELECT * FROM curso c join profesor p ON c.profesor_codigo = p.codigo";
+	private static final String SQL_SELECT = "SELECT c.codigo, c.nombre, c.identificador, c.nhoras, p.codigo, p.nombre, p.apellidos FROM curso c join profesor p ON c.profesor_codigo = p.codigo";
 	private static final String SQL_SELECT_R = "SELECT * FROM curso c join alumno_has_resenyas ahr ON c.codigo = ahr.curso_codigo";
 	private static final String SQL_SELECT_ID = SQL_SELECT + " WHERE c.codigo = ?";
 	private static final String SQL_SELECT_ID_R = SQL_SELECT_R + " WHERE c.codigo = ?";
 
-	public static ArrayList<CursoDTO> obtenerTodos() {
-		var cursos = new ArrayList<CursoDTO>();
+	public static ArrayList<CursoDTO4> obtenerTodos() {
+		var cursos = new ArrayList<CursoDTO4>();
 
 		try (Connection con = AccesoDatos.obtenerConexion();
 				PreparedStatement pst = con.prepareStatement(SQL_SELECT);
 				ResultSet rs = pst.executeQuery()) {
 			
-			CursoDTO curso;
-			ProfeDTO profe;
+			CursoDTO4 curso;
+			ProfeDTO2 profe;
 
 			while (rs.next()) {
-				profe = new ProfeDTO(rs.getLong("p.codigo"), rs.getString("p.nombre"), rs.getString("p.apellidos"));
-				curso = new CursoDTO(rs.getLong("c.codigo"), rs.getString("c.nombre"), rs.getString("c.identificador"), rs.getInt("c.nhoras"), profe);
+				var nombreCompleto = rs.getString("p.nombre") + " " + rs.getString("p.apellidos");
+				profe = new ProfeDTO2(rs.getLong("p.codigo"), nombreCompleto);
+				curso = new CursoDTO4(rs.getLong("c.codigo"), rs.getString("c.nombre"), rs.getString("c.identificador"), rs.getInt("c.nhoras"), profe);
 				
 				LOG.info("SE HA CREADO EL CURSO: " + curso);
 				
@@ -122,7 +125,7 @@ public class CursoAccesoDatos {
 	        throw new RuntimeException("Error en la select", e);
 	    }
 	}
-	
+
 	public static ArrayList<CursoDTO> obtenerTodosCursos() {
 	    ArrayList<CursoDTO> cursos = new ArrayList<CursoDTO>();
 

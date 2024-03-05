@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.ipartek.formacion.cursos.accesodatos.ProfeAccesoDatos;
 import com.ipartek.formacion.cursos.dtos.ProfeDTO;
+import com.ipartek.formacion.cursos.dtos.ProfeDTO3;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -20,6 +21,11 @@ public class ProfeRest {
 	@Path("/{codigo}")
 	public ProfeDTO obtenerPorId(@PathParam("codigo") Long codigo) {
 		return ProfeAccesoDatos.obtenerPorId(codigo);
+	}
+	@GET
+	@Path("/n/{codigo}")
+	public ProfeDTO3 obtenerPorIdProfe(@PathParam("codigo") Long codigo) {
+		return ProfeAccesoDatos.obtenerPorIdProfe(codigo);
 	}
 
 }
