@@ -137,7 +137,26 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Curso'
-
+  /cursos/r/{codigo}:
+    get:
+      tags:
+      - Cursos
+      parameters:
+      - name: codigo
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+                schema:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Curso'
 
 components:
   schemas:

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.ipartek.formacion.cursos.accesodatos.CursoAccesoDatos;
 import com.ipartek.formacion.cursos.dtos.CursoDTO;
 import com.ipartek.formacion.cursos.dtos.CursoDTO2;
+import com.ipartek.formacion.cursos.dtos.CursoDTO3;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -18,15 +19,15 @@ public class CursoRest {
 		return CursoAccesoDatos.obtenerTodos();
 	}
 	
-//	@GET
-//	@Path("/{codigo}")
-//	public CursoDTO obtenerPorId(@PathParam("codigo") Long codigo) {
-//		return CursoAccesoDatos.obtenerPorId(codigo);
-//	}
-	
 	@GET
 	@Path("/{codigo}")
-	public CursoDTO2 obtenerPorIdResenya(@PathParam("codigo") Long codigo) {
+	public CursoDTO obtenerPorId(@PathParam("codigo") Long codigo) {
+		return CursoAccesoDatos.obtenerPorId(codigo);
+	}
+	
+	@GET
+	@Path("/r/{codigo}")
+	public CursoDTO3 obtenerPorIdResenya(@PathParam("codigo") Long codigo) {
 		return CursoAccesoDatos.obtenerPorIdResenya(codigo);
 	}
 	
